@@ -13,10 +13,15 @@ jobs:
         with:
           python-version: '3.10' 
       - name: Install dependencies
-        run: python -m pip install black ruff isort mypy
-      - name: Run formatters
-        run: python -m black --check . && python -m isort --check .
-      - name: Run linter
-        run: python -m ruff .
-      - name: Run static type checker
-        run: python -m mypy .
+        run: |
+          pip install pipenv
+          pipenv install --dev
+
+      - name: Run flake8 linting
+        run: pipenv run flake8
+
+      - name: Run isort
+        run: pipenv run isort .
+
+      - name: Run black
+        run: pipenv run black .
