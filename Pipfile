@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 django = "==4.2.11"
+httpx = "~=0.27.0"
+requests = "~=2.0.0"
 
 [dev-packages]
 flake8 = "*"
@@ -12,5 +14,4 @@ isort = "*"
 black = "*"
 
 [requires]
-python_version = "3.11"
-  
+python_version = "3.12"
