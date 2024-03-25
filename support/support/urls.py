@@ -1,6 +1,6 @@
-from typing import Callable
+# from typing import Callable
 
-import httpx
+# import httpx
 import requests
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.urls import path
@@ -18,7 +18,7 @@ def get_current_market_state(request: HttpRequest) -> JsonResponse:
         "function": "CURRENCY_EXCHANGE_RATE",
         "from_currency": source,
         "to_currency": destination,
-        "apikey": "demo",
+        "apikey": key,
     }
 
     response = requests.get(url, params=params)
