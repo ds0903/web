@@ -1,12 +1,11 @@
-import httpx
-import requests
 from typing import Callable
 
-from django.urls import path
+import httpx
+import requests
 from django.http import HttpRequest, HttpResponse, JsonResponse
-
-
+from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
+
 
 @csrf_exempt
 def get_current_market_state(request: HttpRequest) -> JsonResponse:
@@ -16,7 +15,6 @@ def get_current_market_state(request: HttpRequest) -> JsonResponse:
     url = "https://www.alphavantage.co/query"
 
     params = {
-
         "function": "CURRENCY_EXCHANGE_RATE",
         "from_currency": source,
         "to_currency": destination,
@@ -27,18 +25,17 @@ def get_current_market_state(request: HttpRequest) -> JsonResponse:
 
     data = response.json()
     # rate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
-    
+
     return JsonResponse(data)
 
+    # http://localhost:8000/fetch-market?source=EUR&destination=USD
+    # http://localhost:8000/fetch-market n\
 
-        
-
-    #http://localhost:8000/fetch-market?source=EUR&destination=USD
-    #http://localhost:8000/fetch-market n\
 
 def market(request: HttpRequest) -> HttpResponse:
-    content="<h1>hi</h1>"
+    content = "<h1>hi</h1>"
     return HttpResponse(content)
+
 
 urlpatterns = [
     path(route="fetch-market", view=get_current_market_state),
