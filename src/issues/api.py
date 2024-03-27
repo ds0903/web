@@ -6,20 +6,20 @@ import random
 
 @csrf_exempt
 
-def post_issues(request: HttpRequest) -> JsonResponse:#noqa
-    a=random.randint(1,50)#noqa
-    b=random.randint(1,50)#noqa
+def post_issues(request: HttpRequest) -> JsonResponse:
+    a=random.randint(1,50)
+    b=random.randint(1,50)
     Issue.objects.create(
         title=f"test{a}",
         body=f"test{b}",
-        juni_id = 2,#noqa
-        seni_id = 4,#noqa
+        juni_id = 2,
+        seni_id = 4,
     )
     
 
 
-      # issue = Issue.objects.all()#noqa
-      #issue1 = Issue.objects.first()#noqa
+      # issue = Issue.objects.all()
+      #issue1 = Issue.objects.first()
     # result = {
     #     "sho1": issue1.id,
     #     "sho2": issue1.body,
@@ -38,9 +38,9 @@ def post_issues(request: HttpRequest) -> JsonResponse:#noqa
 
 
 
-def get_issues(request: HttpRequest) -> JsonResponse:#noqa
+def get_issues(request: HttpRequest) -> JsonResponse:
     issues = Issue.objects.all()
-        #noqa
+       
     result: list[dict] = [{
         "sho1": issue.id,
         "sho2": issue.body,
@@ -51,4 +51,4 @@ def get_issues(request: HttpRequest) -> JsonResponse:#noqa
         ]
     print("verygood")
 
-    return JsonResponse(data={"results": result})#noqa
+    return JsonResponse(data={"results": result})

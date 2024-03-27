@@ -1,6 +1,6 @@
 from django.db import models
 
-class Issue(models.Model): #noqa
+class Issue(models.Model): 
     juni_id = models.IntegerField(max_length=5)
     seni_id = models.IntegerField(max_length=5)
     title = models.CharField(max_length=50)
