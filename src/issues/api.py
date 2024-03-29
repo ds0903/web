@@ -1,54 +1,43 @@
+import json
+
 from django.http import HttpRequest, JsonResponse
-from issues.models import Issue
 from django.views.decorators.csrf import csrf_exempt
-import random
+
+from issues.models import Issue
 
 
 @csrf_exempt
+def post_issues(request) -> JsonResponse:
+    data = json.loads(request.body)
+    id_s = data.get("id")
+    body_s = data.get("body")
+    title_s = data.get("title")  # s = "start point"
+    seni_id_s = data.get("seni_id")
+    juni_id_s = data.get("juni_id")
 
-def post_issues(request: HttpRequest) -> JsonResponse:
-    a=random.randint(1,50)
-    b=random.randint(1,50)
     Issue.objects.create(
-        title=f"test{a}",
-        body=f"test{b}",
-        juni_id = 2,
-        seni_id = 4,
+        id=id_s,
+        juni_id=juni_id_s,
+        seni_id=seni_id_s,
+        title=title_s,
+        body=body_s,
     )
-    
-
-
-      # issue = Issue.objects.all()
-      #issue1 = Issue.objects.first()
-    # result = {
-    #     "sho1": issue1.id,
-    #     "sho2": issue1.body,
-    #     "sho3": issue1.title,
-    #     "sho2": issue1.seni_id,
-    #     "sho1": issue1.juni_id,
-
-    # }
-    # result={
-    #      "create/ok"
-    # }
-    # print("good")
-
     return JsonResponse(data={"status": "allgood"})
-
-
 
 
 def get_issues(request: HttpRequest) -> JsonResponse:
     issues = Issue.objects.all()
-       
-    result: list[dict] = [{
-        "sho1": issue.id,
-        "sho2": issue.body,
-        "sho3": issue.title,
-        "sho4": issue.seni_id,
-        "sho5": issue.juni_id,
-        } for issue in issues
-        ]
+
+    result: list[dict] = [
+        {
+            "id": issue.id,
+            "body": issue.body,
+            "title": issue.title,
+            "seni_id": issue.seni_id,
+            "juni_id": issue.juni_id,
+        }
+        for issue in issues
+    ]
     print("verygood")
 
     return JsonResponse(data={"results": result})
