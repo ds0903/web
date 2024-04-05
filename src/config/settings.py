@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     "users",
     "issues",
 ]
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
