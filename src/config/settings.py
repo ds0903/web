@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     # my apps
     "users",
     "issues",
+    "rest_framework",
+    "rest_framework_simplejwt",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -72,6 +74,7 @@ DATABASES = {
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
         "HOST": os.getenv("DATABASE_HOST"),
         "PORT": os.getenv("DATABASE_PORT"),
+        "OPTIONS": {"options": "-c search_path=ds0903"},
     }
 }
 
@@ -115,3 +118,12 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+AUTH_USER_MODEL = "users.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
