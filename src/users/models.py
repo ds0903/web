@@ -46,4 +46,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.first_name and self.last_name:
             return self.get_full_name
         else:
-            return self.email # noqa
+            return self.email  # noqa

@@ -6,6 +6,7 @@ from users.models import User
 class Issue(models.Model):
     title = models.CharField(max_length=50)
     status = models.PositiveSmallIntegerField()
+    body = models.TextField(null=True)
 
     junior = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="junior_issues"

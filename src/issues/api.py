@@ -1,13 +1,61 @@
 import json
 
-from django.http import HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.decorators import api_view
+
 
 from issues.models import Issue
+from .enums import Status
+from users.enums import Role
+
+
+class IssueCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Issue
+        fields = ["id", "title", "body"]
+
+
+class IssueSerializer(serializers.ModelSerializer):
+    status = serializers.IntegerField(required=False)
+    junior = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+    class Meta:
+        model = Issue
+        fields = "__all__"
+
+    def validate(self, attrs):
+        request = self.context["request"] # noqa
+        attrs["status"] = Status.OPENED
+        # attrs["junior"] = request.user
+        return attrs
+
+
+class IssuesAPI(generics.ListCreateAPIView):
+    http_method_names = ["get", "post"]
+    serializer_class = IssueSerializer
+
+    # def get_serializer_class(self):
+    #     if self.request.method == "POST":
+    #         return IssueCreateSerializer
+    #     else:
+    #         return IssueSerializer
+
+    def get_queryset(self): # noqa
+        return Issue.objects.all()
+      # noqa
+    def post(self, request):# noqa
+        if request.user.role == Role.SENIOR:
+            raise Exception("the role is senior")
+
+        return super().post(request)
 
 
 @csrf_exempt
-def post_issues(request) -> JsonResponse:
+def post_issues(request) -> Response:
     data = json.loads(request.body)
     id_s = data.get("id")
     body_s = data.get("body")
@@ -22,22 +70,42 @@ def post_issues(request) -> JsonResponse:
         title=title_s,
         body=body_s,
     )
-    return JsonResponse(data={"status": "allgood"})
+    return Response(data={"status": "allgood"})
 
 
-def get_issues(request: HttpRequest) -> JsonResponse:
-    issues = Issue.objects.all()
+class IssuesRetriveAPI(generics.RetrieveUpdateDestroyAPIView):
+    http_method_names = ["get", "put", "path", "delete"]
+    serializer_class = IssueSerializer
+    queryset = Issue.objects.all()
 
-    result: list[dict] = [
-        {
-            "id": issue.id,
-            "body": issue.body,
-            "title": issue.title,
-            "seni_id": issue.seni_id,
-            "juni_id": issue.juni_id,
-        }
-        for issue in issues
-    ]
-    print("verygood")
+# @api_view()
+# def get_issues(request) -> Response:
+#     issues = Issue.objects.all()
+#     results = [IssueSerializer(issue).data for issue in issues]
+#     # result: list[dict] = [
+#     #     {
+#     #         "id": issue.id,
+#     #         "body": issue.body,
+#     #         "title": issue.title,
+#     #         "seni_id": issue.seni_id,
+#     #         "juni_id": issue.juni_id,
+#     #     }
+#     #     for issue in issues
+#     # ]
+#     # print("verygood")
 
-    return JsonResponse(data={"results": result})
+    # return Response(data={"results": results})
+
+
+@api_view()
+def retrive_issue(request, issue_id: int) -> Response:
+    instance = get_object_or_404(Issue, id=issue_id)
+
+    return Response(data={"result": IssueSerializer(instance).data})
+
+
+@api_view()
+def back_issue(request, issue_id: int) -> Response:
+    instance = get_object_or_404(Issue, id=issue_id)
+
+    return Response(data={"result": IssueSerializer(instance).data})
