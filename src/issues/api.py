@@ -2,15 +2,14 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import serializers
-from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import generics, serializers
 from rest_framework.decorators import api_view
-
+from rest_framework.response import Response
 
 from issues.models import Issue
-from .enums import Status
 from users.enums import Role
+
+from .enums import Status
 
 
 class IssueCreateSerializer(serializers.ModelSerializer):
@@ -28,7 +27,7 @@ class IssueSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, attrs):
-        request = self.context["request"] # noqa
+        request = self.context["request"]  # noqa
         attrs["status"] = Status.OPENED
         # attrs["junior"] = request.user
         return attrs
@@ -44,10 +43,11 @@ class IssuesAPI(generics.ListCreateAPIView):
     #     else:
     #         return IssueSerializer
 
-    def get_queryset(self): # noqa
+    def get_queryset(self):  # noqa
         return Issue.objects.all()
-      # noqa
-    def post(self, request):# noqa
+
+    # noqa
+    def post(self, request):  # noqa
         if request.user.role == Role.SENIOR:
             raise Exception("the role is senior")
 
@@ -78,6 +78,7 @@ class IssuesRetriveAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = IssueSerializer
     queryset = Issue.objects.all()
 
+
 # @api_view()
 # def get_issues(request) -> Response:
 #     issues = Issue.objects.all()
@@ -94,7 +95,7 @@ class IssuesRetriveAPI(generics.RetrieveUpdateDestroyAPIView):
 #     # ]
 #     # print("verygood")
 
-    # return Response(data={"results": results})
+# return Response(data={"results": results})
 
 
 @api_view()
