@@ -79,25 +79,6 @@ class IssuesRetriveAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Issue.objects.all()
 
 
-# @api_view()
-# def get_issues(request) -> Response:
-#     issues = Issue.objects.all()
-#     results = [IssueSerializer(issue).data for issue in issues]
-#     # result: list[dict] = [
-#     #     {
-#     #         "id": issue.id,
-#     #         "body": issue.body,
-#     #         "title": issue.title,
-#     #         "seni_id": issue.seni_id,
-#     #         "juni_id": issue.juni_id,
-#     #     }
-#     #     for issue in issues
-#     # ]
-#     # print("verygood")
-
-# return Response(data={"results": results})
-
-
 @api_view()
 def retrive_issue(request, issue_id: int) -> Response:
     instance = get_object_or_404(Issue, id=issue_id)

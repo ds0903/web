@@ -27,11 +27,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    # class Meta:
-    #     verbose_name = _("user")
-    #     verbose_name_plural = _("users")
-    #     abstract = True
-
     def get_full_name(self):
         """
         Return the first_name plus the last_name, with a space in between.
