@@ -1,9 +1,14 @@
 import json
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import generics, serializers
+from rest_framework import generics, permissions, serializers
+from rest_framework.exceptions import ValidationError
+
+from permissions import IsADMIN
+from users.enums import Role
 
 from .models import User
 
@@ -36,13 +41,30 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserRetriveAPI(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsADMIN]
     http_method_names = ["get", "put", "delete"]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
-# class UserCreateRetriveAPI(generics.ListCreateAPIView):
+class UserRegister(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "password", "first_name", "last_name", "role"]
 
-#     http_method_names = ["get", "post"]
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
+    def validate_role(self, value: str) -> str:
+        if value not in Role.users():
+            raise ValidationError(f"Selected Role must be in {Role.users_values()}") # noqa
+        return value
+
+    def validate(self, attrs: dict) -> dict:
+        attrs["password"] = make_password(attrs["password"])
+
+        return attrs
+
+
+class UserCreateRetriveAPI(generics.ListCreateAPIView):
+    http_method_names = ["get", "post"]
+    serializer_class = UserRegister
+    permission_classes = [permissions.AllowAny]
+    queryset = User.objects.all()

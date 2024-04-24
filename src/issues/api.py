@@ -4,9 +4,11 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, serializers
 from rest_framework.decorators import api_view
+# from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from issues.models import Issue
+from permissions import IsADMIN
 from users.enums import Role
 
 from .enums import Status
@@ -36,15 +38,20 @@ class IssueSerializer(serializers.ModelSerializer):
 class IssuesAPI(generics.ListCreateAPIView):
     http_method_names = ["get", "post"]
     serializer_class = IssueSerializer
+    # permission_classes = [IsAuthenticated]
 
-    # def get_serializer_class(self):
-    #     if self.request.method == "POST":
-    #         return IssueCreateSerializer
-    #     else:
-    #         return IssueSerializer
+    def get_queryset(self):
+        user = self.request.user
 
-    def get_queryset(self):  # noqa
-        return Issue.objects.all()
+        if user.role == "admin":
+
+            return Issue.objects.all()
+        elif user.role == "senior":
+
+            return Issue.objects.exclude(seni_id=user.id)
+        else:
+
+            return Issue.objects.filter(juni_id=user.id)
 
     # noqa
     def post(self, request):  # noqa
@@ -74,8 +81,10 @@ def post_issues(request) -> Response:
 
 
 class IssuesRetriveAPI(generics.RetrieveUpdateDestroyAPIView):
-    http_method_names = ["get", "put", "path", "delete"]
+    http_method_names = ["get", "put", "delete"]
+    permission_classes = [IsADMIN]
     serializer_class = IssueSerializer
+
     queryset = Issue.objects.all()
 
 
