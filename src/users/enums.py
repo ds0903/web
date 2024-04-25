@@ -17,8 +17,7 @@ class Role(StrEnum):
     def users_values(cls) -> list[str]:
         return [cls.SENIOR.value, cls.JUNIOR.value]
 
-
-    @classmethod # noqa
+    @classmethod  # noqa
     @lru_cache(maxsize=1)
     def choices(cls) -> list[tuple[str, str]]:
         # ('senior', "Senior")

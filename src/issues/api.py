@@ -1,10 +1,10 @@
 import json
 
-from django.shortcuts import get_object_or_404
+# from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, serializers
-from rest_framework.decorators import api_view
-# from rest_framework.permissions import IsAuthenticated
+# from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from issues.models import Issue
@@ -38,20 +38,17 @@ class IssueSerializer(serializers.ModelSerializer):
 class IssuesAPI(generics.ListCreateAPIView):
     http_method_names = ["get", "post"]
     serializer_class = IssueSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
+    # queryset = Issue.objects.all()
 
     def get_queryset(self):
         user = self.request.user
-
         if user.role == "admin":
-
             return Issue.objects.all()
         elif user.role == "senior":
-
-            return Issue.objects.exclude(seni_id=user.id)
+            return Issue.objects.exclude(senior_id=user.id)
         else:
-
-            return Issue.objects.filter(juni_id=user.id)
+            return Issue.objects.filter(junior_id=user.id)
 
     # noqa
     def post(self, request):  # noqa
@@ -88,15 +85,15 @@ class IssuesRetriveAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Issue.objects.all()
 
 
-@api_view()
-def retrive_issue(request, issue_id: int) -> Response:
-    instance = get_object_or_404(Issue, id=issue_id)
+# @api_view()
+# def retrive_issue(request, issue_id: int) -> Response:
+#     instance = get_object_or_404(Issue, id=issue_id)
 
-    return Response(data={"result": IssueSerializer(instance).data})
+#     return Response(data={"result": IssueSerializer(instance).data})
 
 
-@api_view()
-def back_issue(request, issue_id: int) -> Response:
-    instance = get_object_or_404(Issue, id=issue_id)
+# @api_view()
+# def back_issue(request, issue_id: int) -> Response:
+#     instance = get_object_or_404(Issue, id=issue_id)
 
-    return Response(data={"result": IssueSerializer(instance).data})
+#     return Response(data={"result": IssueSerializer(instance).data})

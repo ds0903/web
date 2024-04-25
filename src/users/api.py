@@ -54,7 +54,9 @@ class UserRegister(serializers.ModelSerializer):
 
     def validate_role(self, value: str) -> str:
         if value not in Role.users():
-            raise ValidationError(f"Selected Role must be in {Role.users_values()}") # noqa
+            raise ValidationError(
+                f"Selected Role must be in {Role.users_values()}"
+            )  # noqa
         return value
 
     def validate(self, attrs: dict) -> dict:
