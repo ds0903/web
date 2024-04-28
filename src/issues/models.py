@@ -1,4 +1,7 @@
+# from typing import Any
+
 from django.db import models
+from django.db.models import Q
 
 from users.models import User
 
@@ -7,6 +10,11 @@ ISSUE_STATUS_CGOICES = (
     (2, "IN PROGRESS"),
     (3, "CLOSED"),
 )
+
+
+class IsuesManager(models.Manager):
+    def filter_by_participant(self, user: User):
+        return self.filter(Q(junior=user) | Q(senior=user))
 
 
 class Issue(models.Model):
@@ -21,16 +29,13 @@ class Issue(models.Model):
         User, on_delete=models.CASCADE, related_name="senior_issues", null=True
     )
 
+    objects = IsuesManager()
+
     def __repr__(self) -> str:
         return f"Issue[{self.pk} {self.title[:10]}]"
 
     def __str__(self) -> str:
         return self.title[:10]
-
-
-# instance: Issue = Issue.objects.get(id=1)
-
-# issue.message_set
 
 
 class Message(models.Model):

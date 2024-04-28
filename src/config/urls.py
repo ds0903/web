@@ -2,7 +2,9 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView  # noqa
 
-from issues.api import IssuesAPI, IssuesRetriveAPI  # , post_issues  # noqa
+from issues.api import IssuesRetriveAPI  # , post_issues  # noqa
+from issues.api import (IssuesAPI, issues_close, issues_take,
+                        messages_api_dispather)
 from users.api import UserCreateRetriveAPI, UserRetriveAPI, user_manager
 
 urlpatterns = [
@@ -15,4 +17,8 @@ urlpatterns = [
     path("users/<int:pk>", UserRetriveAPI.as_view()),
     path("users/CLS", UserCreateRetriveAPI.as_view()),
     path("users/", user_manager),
+    path("issues/<int:issue_id>/messages", messages_api_dispather),
+    ###
+    path("issues/<int:id>/close", issues_close),
+    path("issues/<int:id>/take", issues_take),
 ]
