@@ -23,8 +23,8 @@ class IssueCreateSerializer(serializers.ModelSerializer):
 
 
 class MessageSrializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    issue = serializers.PrimaryKeyRelatedField(queryset=Issue.objects.all())
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault()) # noqa
+    issue = serializers.PrimaryKeyRelatedField(queryset=Issue.objects.all()) # noqa
 
     class Meta:
         model = Message
@@ -41,7 +41,7 @@ class MessageSrializer(serializers.ModelSerializer):
 
 class IssueSerializer(serializers.ModelSerializer):
     status = serializers.IntegerField(required=False)
-    junior = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    junior = serializers.HiddenField(default=serializers.CurrentUserDefault()) # noqa
 
     class Meta:
         model = Issue
@@ -135,7 +135,7 @@ def messages_api_dispather(request: Request, issue_id: int) -> Response:
     else:
         issue = Issue.objects.get(id=issue_id)
         payload = request.data | {"issue": issue.id}
-        serializer = MessageSrializer(data=payload, context={"request": request})
+        serializer = MessageSrializer(data=payload, context={"request": request}) # noqa
         serializer.is_valid(raise_exception=True)
         serializer.save()
         # breakpoint()
@@ -148,7 +148,7 @@ def issues_close(request: Request, id: int):
     if request.user.role != Role.SENIOR:
         raise PermissionError("only for senior")
     if issue.status != Status.OPENED or issue.senior is None:
-        raise ValidationError({"message": "the issue is not opened"}, code=422)
+        raise ValidationError({"message": "the issue is not opened"}, code=422) # noqa
     else:
         issue = Issue.objects.update(id=id, Status=Status.CLOSED)
         serializer = IssueSerializer(issue)
@@ -172,7 +172,7 @@ def issues_take(request: Request, id: int):
         raise PermissionError("only for senior")
 
     elif issue.status != Status.OPENED or issue.senior is not None:
-        raise ValidationError({"message": "the issue is not opened"}, code=422)
+        raise ValidationError({"message": "the issue is not opened"}, code=422) # noqa
 
     else:
         issue.senior = request.user

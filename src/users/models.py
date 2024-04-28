@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 from .enums import Role
+
 # class User(models.Model):
 from .managers import UserManager
 
