@@ -1,5 +1,5 @@
 venv/
 Pipfile.lock
 .env
-src/issues/migrations/
-src/users/migrations/
+# src/issues/migrations/
+# src/users/migrations/

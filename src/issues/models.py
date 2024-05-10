@@ -31,6 +31,9 @@ class Issue(models.Model):
 
     objects = IsuesManager()
 
+    # class Meta:
+    #     schema = 'ds0903'
+
     def __repr__(self) -> str:
         return f"Issue[{self.pk} {self.title[:10]}]"
 
