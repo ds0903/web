@@ -17,7 +17,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -77,7 +77,10 @@ DATABASES = {
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
         "HOST": os.getenv("DATABASE_HOST"),
         "PORT": os.getenv("DATABASE_PORT"),
-        "OPTIONS": {"options": "-c search_path=ds0903"},
+        "OPTIONS": {
+            "options": os.getenv("OPTIONS", ""),
+        }
+        # "OPTIONS": {"options": "-c search_path=ds0903"},
     }
 }
 

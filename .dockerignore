@@ -1,0 +1,13 @@
+.git/
+.githun/
+.idea/
+.vscode/
+.ruff_vcache/
+.docs/
+examples/
+scripts/
+docker-compose.yml
+Dockerfile
+pyrightconfig.json
+README.md
+__pycache__/

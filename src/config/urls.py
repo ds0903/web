@@ -3,8 +3,8 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView  # noqa
 
 from issues.api import IssuesRetriveAPI  # , post_issues  # noqa
-from issues.api import (IssuesAPI, issues_close, issues_take,  # noqa
-                        messages_api_dispather)
+from issues.api import issues_take  # noqa
+from issues.api import IssuesAPI, issues_close, messages_api_dispather
 from users.api import (UserCreateRetriveAPI, UserRetriveAPI,  # noqa
                        user_manager)
 

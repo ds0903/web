@@ -29,5 +29,7 @@ EXPOSE 8000
 
 # RUN python src/manage.py runserver
 
+
+# CMD [ "sleep", "3", "&&", "python", "src/manage.py", "runserver" ]
 ENTRYPOINT [ "python" ]
-CMD [ "src/manage.py", "runserver" ]
+CMD ["src/manage.py", "runserver", "0.0.0.0:8000"]
