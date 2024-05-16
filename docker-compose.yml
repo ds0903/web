@@ -13,10 +13,11 @@ services:
       - "8000:8000"
     env_file: ".env" 
     depends_on:
-      - database 
+      - database
+      - mailing
+      - broker 
     volumes:
       - "./:/app"
-
 
   database:
     image: "postgres:16"
@@ -26,6 +27,27 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+
+  broker:
+    image: "redis:latest"
+    container_name: test_9_broker
+    ports:
+      - "6379:6379"
+
+  cache:
+    image: "redis:latest"
+    container_name: test_9_cache
+    ports:
+      - "6380:6380"
+
+  mailing:
+    image: "mailhog/mailhog:latest"
+    container_name: test_9_mail
+    env_file: ".env"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
 
 volumes:
   pg_data: {} 

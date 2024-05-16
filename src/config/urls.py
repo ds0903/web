@@ -5,8 +5,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView  # noqa
 from issues.api import IssuesRetriveAPI  # , post_issues  # noqa
 from issues.api import issues_take  # noqa
 from issues.api import IssuesAPI, issues_close, messages_api_dispather
-from users.api import (UserCreateRetriveAPI, UserRetriveAPI,  # noqa
-                       user_manager)
+from users.api import (
+    UserCreateRetriveAPI,
+    UserRetriveAPI,
+    resend_activation_mail,
+    user_manager,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -16,7 +20,10 @@ urlpatterns = [
     path("auth/token/", TokenObtainPairView.as_view()),
     ###
     path("users/<int:pk>", UserRetriveAPI.as_view()),
+    ###
     path("users/CLS", UserCreateRetriveAPI.as_view()),
+    path("users/activate", resend_activation_mail),
+    ###
     path("users/", user_manager),
     path("issues/<int:issue_id>/messages", messages_api_dispather),
     ###

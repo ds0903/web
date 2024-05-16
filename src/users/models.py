@@ -3,11 +3,17 @@ from django.db import models
 from django.utils import timezone
 
 from .enums import Role
+
 # class User(models.Model):
 from .managers import UserManager
 
 #     password = models.CharField(max_length=100)
 #     role = models.CharField(max_length=20)
+
+
+class Activation(models.Model):
+    user = models.CharField(max_length=100)
+    key = models.CharField(max_length=100)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -17,7 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
     # role = models.CharField(max_length=15, default=Role.JUNIOR, choices=[
