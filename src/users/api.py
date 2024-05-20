@@ -89,12 +89,19 @@ class UserCreateRetriveAPI(generics.ListCreateAPIView):
         activator_service = Activator(email)
         activation_key = activator_service.create_activation_key()
 
-        Activation.objects.create(user=email, key=activation_key)
+        # Activation.objects.create(user=email, key=activation_key) # місце що відповідає за створення в бд значення юзера
 
         activator_service.send_user_activation_email(
             activation_key=activation_key
         )  # noqa
+        activator_service.save_activation_information(
+            internal_user_id=serializer.instance.id,
+            activation_key=activation_key,
+        )
+        # print(serializer.serialized_data)
+        # activator_service.save_activation_information(internal_user_id=serializer.instance.id, activation_key=activation_key
 
+        # )
         return Response(UserRegister(serializer.validated_data).data)
 
 

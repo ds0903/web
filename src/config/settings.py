@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "issues",
     "rest_framework",
     "rest_framework_simplejwt",
+    "shared",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -155,5 +156,8 @@ CELERY_BROKER_URL = os.getenv("REDIS_URL", default="redis://broker:6379/0")
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
-# EMAIL_HOST_USER = "mailhog"
-# EMAIL_HOST_PASSWORD = "mailhog"
+EMAIL_HOST_USER = "mailhog"
+EMAIL_HOST_PASSWORD = "mailhog"
+
+CACHE_URL = os.getenv("CACHE_URL", default="redis://cache:6380/0")
+CELERY_BROKER_URL = os.getenv("BROKER_URL", default="redis://broker:6379/0")

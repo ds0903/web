@@ -24,8 +24,6 @@ services:
     image: "postgres:16"
     container_name: test_9_database
     env_file: ".env"
-    ports:
-      - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
 
@@ -46,7 +44,6 @@ services:
     container_name: test_9_mail
     env_file: ".env"
     ports:
-      - "1025:1025"
       - "8025:8025"
 
   worker:

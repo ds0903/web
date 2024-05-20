@@ -11,7 +11,7 @@ RUN apt-get update -y \
     && pip install --upgrade setuptools \
     && apt-get install -y build-essential \
     # менеджер залежностей
-    && pip install pipenv \
+    && pip install pipenv watchdog \
     # Прибираємо не потрібні файли
     && rm -rf /var/lib/apt/lists/* 
 
@@ -19,7 +19,7 @@ RUN apt-get update -y \
 # Встановолюємо залежності 
 COPY ./Pipfile ./Pipfile.lock / 
 # встановлює дев залежності парямо в систему
-RUN pipenv sync --dev --system
+RUN pipenv sync --system
 
 # створити і перейти в дерекоторію або просто перейти
 WORKDIR /app
