@@ -1,8 +1,8 @@
-import json
+# import json
 import uuid
 
-import redis
-from django.conf import settings
+# import redis
+# from django.conf import settings
 
 from shared.cache import CacheService
 
