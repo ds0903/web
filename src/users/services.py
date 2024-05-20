@@ -34,14 +34,14 @@ class Activator:
         cache = CacheService()
         payload = {"user_id": internal_user_id}
         cache.save(
-            namespace="activation", key=activation_key, instance=payload, ttl=2_000
+            namespace="activation", key=activation_key, instance=payload, ttl=2_000 # noqa
         )
 
         # print(internal_user_id, activation_key)
         # connection = redis.Redis.from_url(settings.CACHE_URL)
 
         # payload = {"user_id": internal_user_id}
-        # connection.set(f"activation:{activation_key}", json.dumps(payload), ex=200)
+        # connection.set(f"activation:{activation_key}", json.dumps(payload), ex=200) # noqa
 
         # raise NotImplementedError
 
